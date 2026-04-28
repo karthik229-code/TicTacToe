@@ -1,18 +1,54 @@
+import java.util.Random;
+
 public class TicTacToe {
 
-    static char[][] board = new char[3][3];
+    static char[][] board = {
+            {'-', '-', '-'},
+            {'-', '-', '-'},
+            {'-', '-', '-'}
+    };
+
+    static char computerSymbol = 'O';
 
     public static void main(String[] args) {
+        computerMove();
 
-        // Sample move
-        placeMove(0, 0, 'X');
-
-        // Print updated cell
-        System.out.println(board[0][0]);
+        // Print board after move
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                System.out.print(board[i][j] + " ");
+            }
+            System.out.println();
+        }
     }
 
-    // UC6: Place move (assumes move already validated)
+    // UC5: Validate move
+    static boolean isValidMove(int row, int col) {
+        if (row < 0 || row > 2 || col < 0 || col > 2) {
+            return false;
+        }
+        return board[row][col] == '-';
+    }
+
+    // UC6: Place move
     static void placeMove(int row, int col, char symbol) {
         board[row][col] = symbol;
+    }
+
+    // UC7: Computer makes random valid move
+    static void computerMove() {
+        Random rand = new Random();
+
+        while (true) {
+            int slot = rand.nextInt(9) + 1; // 1–9
+
+            int row = (slot - 1) / 3;
+            int col = (slot - 1) % 3;
+
+            if (isValidMove(row, col)) {
+                placeMove(row, col, computerSymbol);
+                break;
+            }
+        }
     }
 }
