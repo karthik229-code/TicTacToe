@@ -1,54 +1,49 @@
-import java.util.Random;
-
 public class TicTacToe {
 
     static char[][] board = {
-            {'-', '-', '-'},
-            {'-', '-', '-'},
-            {'-', '-', '-'}
+            {'X', 'X', 'X'},
+            {'-', 'O', '-'},
+            {'O', '-', '-'}
     };
 
-    static char computerSymbol = 'O';
-
     public static void main(String[] args) {
-        computerMove();
+        System.out.println(hasWon('X')); // true
+    }
 
-        // Print board after move
+    // UC9: Check winning condition
+    static boolean hasWon(char symbol) {
+
+        // Check rows
         for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                System.out.print(board[i][j] + " ");
-            }
-            System.out.println();
-        }
-    }
-
-    // UC5: Validate move
-    static boolean isValidMove(int row, int col) {
-        if (row < 0 || row > 2 || col < 0 || col > 2) {
-            return false;
-        }
-        return board[row][col] == '-';
-    }
-
-    // UC6: Place move
-    static void placeMove(int row, int col, char symbol) {
-        board[row][col] = symbol;
-    }
-
-    // UC7: Computer makes random valid move
-    static void computerMove() {
-        Random rand = new Random();
-
-        while (true) {
-            int slot = rand.nextInt(9) + 1; // 1–9
-
-            int row = (slot - 1) / 3;
-            int col = (slot - 1) % 3;
-
-            if (isValidMove(row, col)) {
-                placeMove(row, col, computerSymbol);
-                break;
+            if (board[i][0] == symbol &&
+                    board[i][1] == symbol &&
+                    board[i][2] == symbol) {
+                return true;
             }
         }
+
+        // Check columns
+        for (int j = 0; j < 3; j++) {
+            if (board[0][j] == symbol &&
+                    board[1][j] == symbol &&
+                    board[2][j] == symbol) {
+                return true;
+            }
+        }
+
+        // Check diagonals
+        if (board[0][0] == symbol &&
+                board[1][1] == symbol &&
+                board[2][2] == symbol) {
+            return true;
+        }
+
+        if (board[0][2] == symbol &&
+                board[1][1] == symbol &&
+                board[2][0] == symbol) {
+            return true;
+        }
+
+        return false;
     }
 }
